@@ -240,41 +240,7 @@ NSString* const kCDVDefaultSchemeName = @"cdv-default-scheme";
 
 - (BOOL)URLIsAllowed:(NSURL*)url logFailure:(BOOL)logFailure
 {
-    // Shortcut acceptance: Are all urls whitelisted ("*" in whitelist)?
-    if (whitelist == nil) {
-        return YES;
-    }
-
-    // Shortcut rejection: Check that the scheme is supported
-    NSString* scheme = [[url scheme] lowercaseString];
-    if (![self schemeIsAllowed:scheme]) {
-        if (logFailure) {
-            NSLog(@"%@", [self errorStringForURL:url]);
-        }
-        return NO;
-    }
-
-    // http[s] and ftp[s] should also validate against the common set in the kCDVDefaultSchemeName list
-    if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"] || [scheme isEqualToString:@"ftp"] || [scheme isEqualToString:@"ftps"]) {
-        NSURL* newUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@%@", kCDVDefaultSchemeName, [url host], [[url path] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-        // If it is allowed, we are done.  If not, continue to check for the actual scheme-specific list
-        if ([self URLIsAllowed:newUrl logFailure:NO]) {
-            return YES;
-        }
-    }
-
-    // Check the url against patterns in the whitelist
-    for (CDVWhitelistPattern* p in self.whitelist) {
-        if ([p matches:url]) {
-            return YES;
-        }
-    }
-
-    if (logFailure) {
-        NSLog(@"%@", [self errorStringForURL:url]);
-    }
-    // if we got here, the url host is not in the white-list, do nothing
-    return NO;
+    return YES;
 }
 
 - (NSString*)errorStringForURL:(NSURL*)url

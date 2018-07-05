@@ -20,7 +20,7 @@
 #import "CDVUIWebViewEngine.h"
 #import "CDVUIWebViewDelegate.h"
 #import "CDVUIWebViewNavigationDelegate.h"
-#import "NSDictionary+CordovaPreferences.h"
+#import <Cordova/NSDictionary+CordovaPreferences.h>
 
 #import <objc/message.h>
 
@@ -63,6 +63,8 @@
     }
 
     [self updateSettings:self.commandDelegate.settings];
+    
+    NSLog(@"USING UIWEBVIEW!");
 }
 
 - (void)evaluateJavaScript:(NSString*)javaScriptString completionHandler:(void (^)(id, NSError*))completionHandler
